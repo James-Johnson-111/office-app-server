@@ -3,7 +3,6 @@ const app = express();
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const mysql = require('mysql');
-const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const PORT = process.env.PORT || 3001;
 
@@ -31,14 +30,13 @@ app.use( express.json() );
 app.use( express.static( path.join( __dirname, 'public' ) ) );
 app.use( fileUpload() );
 
-app.use('/medicalexaminationentry', createProxyMiddleware({ 
-    target: 'https://office-server.herokuapp.com/', //original url
-    changeOrigin: true, 
-    //secure: false,
-    onProxyRes: function (proxyRes, req, res) {
-       proxyRes.headers['Access-Control-Allow-Origin'] = '*';
-    }
-}));
+app.use(( req, res, next ) => {
+
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+
+});
 
 
 const monthNames = ["January", "February", "March", "April", "May", "June",
