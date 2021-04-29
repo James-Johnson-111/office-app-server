@@ -472,7 +472,7 @@ app.post( '/getcandidatethroughtime', ( req, res ) => {
 
 } )
 
-app.listen( 8080, () => {
+app.listen( 3001, () => {
 
     console.log("Server Has Been Started");
 
